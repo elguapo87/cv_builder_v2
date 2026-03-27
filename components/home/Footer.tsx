@@ -19,7 +19,7 @@ const Footer = () => {
                     />
                 </Link>
 
-                <hr className="w-full text-stone-100" />
+                <hr className="w-full text-stone-50" />
 
                 <p className="text-sm mt-1">All rights reserved | Created by P.G. 2026</p>
             </div>
