@@ -137,8 +137,8 @@ const Hero = () => {
 
 
             <div className='flex gap-3 mt-8'>
-                <button
-                    onClick={() => router.push("/dashboard")}
+                <Link
+                    href="/dashboard"
                     className="bg-[#A6FF5D] hover:bg-[#A6FF5D]/90 text-gray-800
                         px-6 py-2.5 rounded-full text-sm transition cursor-pointer group"
                 >
@@ -150,7 +150,7 @@ const Hero = () => {
                             Get Started today
                         </span>
                     </div>
-                </button>
+                </Link>
             </div>
 
             <div className="flex flex-row items-center justify-center gap-10 md:gap-20 mx-auto mt-17 px-4 flex-wrap">

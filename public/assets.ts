@@ -67,7 +67,7 @@ export const dummyResumeData = [
         ],
         template: "minimal-image",
         accent_color: "#14B8A6",
-        project: [
+        projects: [
             {
                 name: "Team Task Management System",
                 type: "Web Application (Productivity Tool)",
@@ -142,7 +142,7 @@ export const dummyResumeData = [
         ],
         template: "minimal-image",
         accent_color: "#6366F1",
-        project: [
+        projects: [
             {
                 name: "FitTrack - Fitness Dashboard",
                 type: "Web Application (Health & Fitness)",
@@ -217,7 +217,7 @@ export const dummyResumeData = [
         ],
         template: "minimal-image",
         accent_color: "#F59E0B",
-        project: [
+        projects: [
             {
                 name: "Invoicr - Invoice Management System",
                 type: "Web Application (FinTech)",

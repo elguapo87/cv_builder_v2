@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react'
 
 const Navbar = () => {
     const user = { name: "John Doe" };
@@ -15,7 +14,7 @@ const Navbar = () => {
     };
 
     return (
-        <div className='shadow md:shadow-md shadow-stone-100 bg-black/97'>
+        <div className='shadow md:shadow-md shadow-[#A6FF5D] bg-black/97'>
             <nav className='flex items-center justify-between max-w-7xl mx-auto px-4
                 py-3.5 text-slate-800 transition-all'
             >

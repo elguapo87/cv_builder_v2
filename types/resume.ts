@@ -20,7 +20,7 @@ export interface Experience {
     description?: string;
 };
 
-export interface Project {
+export interface Projects {
     name: string;
     type?: string;
     description?: string;
@@ -41,8 +41,7 @@ export interface ResumeData {
     personal_info?: PersonalInfo;
     professional_summary?: string;
     experience?: Experience[];
-    // project?: Project[];
-    projects: Project[];
+    projects: Projects[];
     education?: Education[];
     skills?: Skill[];
 }
@@ -59,3 +58,4 @@ export interface StoredResume extends ResumeData {
     updatedAt: string;
     createdAt: string;
 }
+
