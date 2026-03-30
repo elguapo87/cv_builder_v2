@@ -1,5 +1,6 @@
 "use client"
 
+import ColorPicker from "@/components/ColorPicker";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
 import { StoredResume } from "@/types/resume";
@@ -129,6 +130,16 @@ const ResumeBuilder = () => {
                       setResumeData((prev) => ({
                         ...prev,
                         template: data
+                      }))
+                    }
+                  />
+
+                  <ColorPicker 
+                    selectedColor={resumeData.accent_color}
+                    onChange={(data: string) => 
+                      setResumeData((prev) => ({
+                        ...prev,
+                        accent_color: data
                       }))
                     }
                   />

@@ -1,4 +1,4 @@
-import { Education, Experience, Project, ResumeData, Skill } from "@/types/resume";
+import { Education, Experience, Projects, ResumeData, Skill } from "@/types/resume";
 import { Mail, Phone, MapPin, Globe, Link } from "lucide-react";
 
 interface ClassicTemplateProps {
@@ -106,7 +106,7 @@ const ClassicTemplate = ({ data, accentColor }: ClassicTemplateProps) => {
                     </h2>
 
                     <ul className="space-y-3 ">
-                        {data.projects.map((proj: Project, index: number) => (
+                        {data.projects.map((proj: Projects, index: number) => (
                             <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6">
                                 <div>
                                     <li className="font-semibold text-gray-800 ">{proj.name}</li>
