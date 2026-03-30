@@ -1,10 +1,12 @@
 "use client"
 
 import ColorPicker from "@/components/ColorPicker";
+import ExperienceForm from "@/components/ExperienceForm";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
+import ProfessionalSummaryForm from "@/components/ProfessionalSummaryForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
-import { PersonalInfo, StoredResume } from "@/types/resume";
+import { Experience, PersonalInfo, StoredResume } from "@/types/resume";
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -44,9 +46,6 @@ const ResumeBuilder = () => {
   ];
 
   const activeSection = sections[activeSectionIndex];
-
-  console.log(activeSection);
-
 
   useEffect(() => {
     if (!resumeId) return;
@@ -174,9 +173,9 @@ const ResumeBuilder = () => {
               {/* FORM CONTENT */}
               <div className="space-y-6 min-h-[30vh]">
                 {activeSection.id === "personal" && (
-                  <PersonalInfoForm 
+                  <PersonalInfoForm
                     personalData={resumeData.personal_info}
-                    onChange={(data: PersonalInfo) => 
+                    onChange={(data: PersonalInfo) =>
                       setResumeData((prev) => ({
                         ...prev,
                         personal_info: data
@@ -184,6 +183,30 @@ const ResumeBuilder = () => {
                     }
                     removeBackground={removeBackground}
                     setRemoveBackground={setRemoveBackground}
+                  />
+                )}
+
+                {activeSection.id === "summary" && (
+                  <ProfessionalSummaryForm
+                    data={resumeData.professional_summary ?? ""}
+                    onChange={(data: string) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        professional_summary: data
+                      }))
+                    }
+                  />
+                )}
+
+                {activeSection.id === "experience" && (
+                  <ExperienceForm 
+                    expData={resumeData.experience ?? []}
+                    onChange={(data: Experience[]) => 
+                      setResumeData((prev) => ({
+                        ...prev,
+                        experience: data
+                      }))
+                    }
                   />
                 )}
               </div>
