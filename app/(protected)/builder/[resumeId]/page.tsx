@@ -1,10 +1,11 @@
 "use client"
 
 import ColorPicker from "@/components/ColorPicker";
+import PersonalInfoForm from "@/components/PersonalInfoForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
-import { StoredResume } from "@/types/resume";
-import { ArrowLeftIcon, Briefcase, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
+import { PersonalInfo, StoredResume } from "@/types/resume";
+import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
@@ -116,7 +117,7 @@ const ResumeBuilder = () => {
               {/* PROGRESS BAR USING activeSectionIndex */}
               <hr className="absolute top-0 left-0 right-0 border-3 border-stone-400/80" />
               <hr
-                className="absolute top-0 left-0 h-1.5 bg-linear-to-r from-green-400 to-green-500
+                className="absolute top-0 left-0 h-1.5 bg-linear-to-r from-[#7ce761] to-[#55a741]
                   border-none transition-all duration-2000"
                 style={{ width: `${(activeSectionIndex / (sections.length - 1)) * 100}%` }}
               />
@@ -124,9 +125,9 @@ const ResumeBuilder = () => {
               {/* SECTION NAVIGATION  */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
                 <div className="flex items-center gap-2">
-                  <TemplateSelector 
+                  <TemplateSelector
                     selectedTemplate={resumeData.template}
-                    onChange={(data: string) => 
+                    onChange={(data: string) =>
                       setResumeData((prev) => ({
                         ...prev,
                         template: data
@@ -134,9 +135,9 @@ const ResumeBuilder = () => {
                     }
                   />
 
-                  <ColorPicker 
+                  <ColorPicker
                     selectedColor={resumeData.accent_color}
-                    onChange={(data: string) => 
+                    onChange={(data: string) =>
                       setResumeData((prev) => ({
                         ...prev,
                         accent_color: data
@@ -144,6 +145,47 @@ const ResumeBuilder = () => {
                     }
                   />
                 </div>
+
+                <div className="flex items-center">
+                  {activeSectionIndex !== 0 && (
+                    <button
+                      onClick={() => setActiveSectionIndex((prevIndex) => Math.max(prevIndex - 1, 0))}
+                      className="flex items-center gap-1 p-3 rounded-lg text-sm font-medium text-gray-600 
+                        hover:bg-gray-50 transition-all"
+                      disabled={activeSectionIndex === 0}
+                    >
+                      <ChevronLeft className="size-4" />
+                      Previous
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => setActiveSectionIndex((prevIndex) => Math.min(prevIndex + 1, sections.length - 1))}
+                    className={`flex items-center gap-1 p-3 rounded-lg text-sm font-medium text-gray-600
+                      hover:bg-gray-50 transition-all ${activeSectionIndex === sections.length - 1 && "opacity-50"}`}
+                    disabled={activeSectionIndex === sections.length - 1}
+                  >
+                    <ChevronRight className="size-4" />
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              {/* FORM CONTENT */}
+              <div className="space-y-6 min-h-[30vh]">
+                {activeSection.id === "personal" && (
+                  <PersonalInfoForm 
+                    personalData={resumeData.personal_info}
+                    onChange={(data: PersonalInfo) => 
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personal_info: data
+                      }))
+                    }
+                    removeBackground={removeBackground}
+                    setRemoveBackground={setRemoveBackground}
+                  />
+                )}
               </div>
             </div>
           </div>
