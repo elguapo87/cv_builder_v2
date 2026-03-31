@@ -5,9 +5,10 @@ import EducationForm from "@/components/EducationForm";
 import ExperienceForm from "@/components/ExperienceForm";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
 import ProfessionalSummaryForm from "@/components/ProfessionalSummaryForm";
+import ProjectForm from "@/components/ProjectForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
-import { Education, Experience, PersonalInfo, StoredResume } from "@/types/resume";
+import { Education, Experience, PersonalInfo, Projects, StoredResume } from "@/types/resume";
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -220,6 +221,18 @@ const ResumeBuilder = () => {
                         education: data
                       }))
                     }}
+                  />
+                )}
+
+                {activeSection.id === "projects" && (
+                  <ProjectForm 
+                    data={resumeData.projects ?? []}
+                    onChange={(data: Projects[]) => 
+                      setResumeData((prev) => ({
+                        ...prev,
+                        projects: data
+                      }))
+                    }
                   />
                 )}
               </div>
