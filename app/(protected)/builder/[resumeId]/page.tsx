@@ -1,12 +1,13 @@
 "use client"
 
 import ColorPicker from "@/components/ColorPicker";
+import EducationForm from "@/components/EducationForm";
 import ExperienceForm from "@/components/ExperienceForm";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
 import ProfessionalSummaryForm from "@/components/ProfessionalSummaryForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
-import { Experience, PersonalInfo, StoredResume } from "@/types/resume";
+import { Education, Experience, PersonalInfo, StoredResume } from "@/types/resume";
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -199,14 +200,26 @@ const ResumeBuilder = () => {
                 )}
 
                 {activeSection.id === "experience" && (
-                  <ExperienceForm 
+                  <ExperienceForm
                     expData={resumeData.experience ?? []}
-                    onChange={(data: Experience[]) => 
+                    onChange={(data: Experience[]) =>
                       setResumeData((prev) => ({
                         ...prev,
                         experience: data
                       }))
                     }
+                  />
+                )}
+
+                {activeSection.id === "education" && (
+                  <EducationForm
+                    data={resumeData.education ?? []}
+                    onChange={(data: Education[]) => {
+                      setResumeData((prev) => ({
+                        ...prev,
+                        education: data
+                      }))
+                    }}
                   />
                 )}
               </div>
