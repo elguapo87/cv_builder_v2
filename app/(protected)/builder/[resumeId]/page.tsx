@@ -6,11 +6,12 @@ import ExperienceForm from "@/components/ExperienceForm";
 import PersonalInfoForm from "@/components/PersonalInfoForm";
 import ProfessionalSummaryForm from "@/components/ProfessionalSummaryForm";
 import ProjectForm from "@/components/ProjectForm";
+import ResumePreview from "@/components/ResumePreview";
 import SkillsForm from "@/components/SkillsForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
 import { Education, Experience, PersonalInfo, Projects, Skill, StoredResume } from "@/types/resume";
-import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from "lucide-react"
+import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, Download, EyeIcon, EyeOffIcon, FileText, FolderIcon, GraduationCap, Share2Icon, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
@@ -96,6 +97,26 @@ const ResumeBuilder = () => {
       "resumes",
       JSON.stringify([...filtered, updatedResume])
     );
+  };
+
+  const handleShare = () => {
+    if (!resumeData._id) {
+      alert("Please save the resume before sharing.");
+      return;
+    }
+
+    const frontendUrl = window.location.origin;
+    const resumeUrl = `${frontendUrl}/view/${resumeData._id}`;
+
+    if (navigator.share) {
+      navigator.share({ url: resumeUrl, text: "My Resume" });
+    } else {
+      alert("Share not supported on this browser.");
+    }
+  };
+
+  const downloadResume = () => {
+    window.print();
   };
 
   return (
@@ -249,7 +270,61 @@ const ResumeBuilder = () => {
                   />
                 )}
               </div>
+
+              <button
+                onClick={handleSave}
+                className="bg-linear-to-r from-green-100 to-green-300 ring-green-400 text-green-700
+                    ring hover:ring-green-600 transition-all rounded-md px-6 py-2 mt-6 text-sm"
+              >
+                Save Changes
+              </button>
             </div>
+          </div>
+
+          {/* RIGHT PANEL - PREVIEW */}
+          <div className="lg:col-span-7 max-lg:mt-6">
+            <div className="relative w-full">
+              <div className="absolute bottom-3 left-0 right-0 flex items-center justify-end gap-2">
+                {resumeData.public && (
+                  <button
+                    onClick={handleShare}
+                    className="flex items-center py-2 px-4 gap-2 text-xs bg-linear-to-br from-blue-100 to-blue-200
+                        text-blue-600 rounded-lg ring-blue-300 hover:ring transition-colors"
+                  >
+                    <Share2Icon className="size-4" /> Share
+                  </button>
+                )}
+
+                <button
+                  onClick={changeVisibility}
+                  className="flex items-center py-2 px-4 gap-2 text-xs bg-linear-to-br
+                    from-purple-100 to-purple-200 text-purple-600 rounded-lg
+                    ring-purple-300 hover:ring transition-colors"
+                >
+                  {resumeData.public ? (
+                    <EyeIcon className="size-4" />
+                  ) : (
+                    <EyeOffIcon className="size-4" />
+                  )}
+                  {resumeData.public ? "Public" : "Private"}
+                </button>
+
+                <button
+                  onClick={downloadResume}
+                  className="flex items-center py-2 px-6 gap-2 text-xs bg-linear-to-br
+                    from-green-100 to-green-200 text-green-600 rounded-lg
+                    ring-green-300 hover:ring transition-colors"
+                >
+                  <Download className="size-4" /> Download
+                </button>
+              </div>
+            </div>
+
+            <ResumePreview 
+              data={resumeData}
+              template={resumeData.template}
+              accentColor={resumeData.accent_color}
+            />
           </div>
         </div>
       </div>
