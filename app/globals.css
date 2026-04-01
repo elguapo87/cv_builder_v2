@@ -6,6 +6,14 @@
   }
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
 .rainbow::before {                                          
   content: '';
   position: absolute;
@@ -27,4 +35,3 @@
     transform: rotate(1turn);
   }
 }
-
