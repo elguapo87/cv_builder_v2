@@ -46,6 +46,6 @@ const resumeSchema = new mongoose.Schema({
     ]
 }, { timestamps: true, minimize: false });
 
-const resumeModel = mongoose.models.resume || mongoose.model("user", resumeSchema);
+const resumeModel = mongoose.models.resume || mongoose.model("resume", resumeSchema);
 
 export default resumeModel;
