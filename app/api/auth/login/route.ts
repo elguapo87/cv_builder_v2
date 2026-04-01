@@ -9,6 +9,10 @@ export async function POST(req: NextRequest) {
 
         const { email, password } = await req.json();
 
+        if (!email || !password) {
+            return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
+        }
+
         const user = await userModel.findOne({ email });
         if (!user) {
             return NextResponse.json({ success: false, message: "User not exists" }, { status: 400 });
