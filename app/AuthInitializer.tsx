@@ -1,3 +1,5 @@
+"use client"
+
 import { fetchUser, setInitialized, setToken } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
