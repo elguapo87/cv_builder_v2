@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk("auth/register", async (
     credentials: { name: string, email: string, password: string }, { rejectWithValue }
 ) => {
     try {
-        const { data } = await api.post("/auth/register", { credentials });
+        const { data } = await api.post("/auth/register", credentials);
 
         return {
             user: data.User,
@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk("auth/login", async (
     credentials: { email: string, password: string }, { rejectWithValue }
 ) => {
     try {
-        const { data } = await api.post("/auth/login", { credentials });
+        const { data } = await api.post("/auth/login", credentials);
 
         return {
             token: data.token,
@@ -62,7 +62,7 @@ export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, { rejectWi
     try {
         const { data } = await api.get("/auth/me");
 
-        return data;
+        return data.user;
 
     } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || "Failed to fetch user");

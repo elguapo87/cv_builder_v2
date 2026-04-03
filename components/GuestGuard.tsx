@@ -20,7 +20,7 @@ export default function GuestGuard({ children }: { children: React.ReactNode }) 
 
     if (!initialized) return <Loader />
     
-    if (!token) return <Loader />
+    if (token) return <Loader />
 
     return <>{children}</>
 }
