@@ -37,7 +37,11 @@ const Login = () => {
       if (state === "login") {
         await dispatch(loginUser({ email: formData.email, password: formData.password })).unwrap();
       } else {
-        dispatch(registerUser({ name: formData.name, email: formData.email, password: formData.password })).unwrap();
+        await dispatch(registerUser({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        })).unwrap();
       }
 
       router.replace("/dashboard");
@@ -141,7 +145,7 @@ const Login = () => {
                 ? "Please wait..."
                 : state === "login"
                   ? "Login"
-                  : "Sign Up"  
+                  : "Sign Up"
             }
           </button>
 
