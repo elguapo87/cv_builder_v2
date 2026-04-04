@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     try {
         await DBConnection();
 
-        const { name, email, password } = await req.json(); 
+        const { name, email, password } = await req.json();
         if (!name || !email || !password) {
             return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
         }
@@ -16,6 +16,12 @@ export async function POST(req: NextRequest) {
         const user = await userModel.findOne({ email });
         if (user) {
             return NextResponse.json({ success: false, message: "User already exists" }, { status: 400 });
+        }
+
+        if (password.length < 6) {
+            return NextResponse.json({
+                success: false, message: "Password must be at least 6 characters"
+            }, { status: 400 })
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

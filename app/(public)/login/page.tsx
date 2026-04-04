@@ -1,12 +1,14 @@
 "use client"
 
 import GuestGuard from "@/components/GuestGuard";
+import api from "@/lib/axios";
 import { loginUser, registerUser } from "@/redux/slices/authSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { ArrowLeft, Lock, Mail, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
@@ -54,6 +56,26 @@ const Login = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleResetPassword = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    try {
+      if (!formData.email) {
+        toast.error("Please enter your email first");
+        return;
+      }
+
+      const { data } = await api.post("/auth/forgotPassword", { email: formData.email });
+
+      toast.success(data.message || "Check your email for reset link");
+
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Something went wrong"
+      );
+    }
   };
 
   return (
@@ -128,11 +150,13 @@ const Login = () => {
             />
           </div>
 
-          <div className="mt-4 text-left">
-            <button className="text-sm text-[#71fe64] hover:underline">
-              Forgot password?
-            </button>
-          </div>
+          {state === "login" && (
+            <div className="mt-4 text-left">
+              <button onClick={handleResetPassword} className="text-sm text-[#71fe64] hover:underline" type="button">
+                Forgot password?
+              </button>
+            </div>
+          )}
 
           <button
             type="submit"
