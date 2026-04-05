@@ -3,7 +3,7 @@ import protectUser from "@/middleware/protectUser";
 import resumeModel from "@/models/resumeModel";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         await DBConnection();
 

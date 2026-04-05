@@ -2,7 +2,6 @@
 
 import api from '@/lib/axios';
 import { Lock, X } from 'lucide-react';
-import { set } from 'mongoose';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -27,7 +26,7 @@ const ResetPassword = () => {
         if (!token) {
             toast.error("Invalid or missing token");
             setLoading(false);
-            return
+            return;
         }
 
         if (formData.password.length < 6) {
