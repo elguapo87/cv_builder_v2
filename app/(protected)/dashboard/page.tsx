@@ -1,18 +1,20 @@
 "use client"
 
-import { dummyResumeData } from "@/public/assets";
 import { addResume, fetchUserResumes, removeResume, updateResume } from "@/redux/slices/resumeSlice";
+import { uploadResume as aiUploaResume } from "@/redux/slices/aiSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { StoredResume } from "@/types/resume";
-import { FilePenIcon, PencilIcon, PlusIcon, TrashIcon, UploadCloud, UploadCloudIcon, XIcon } from "lucide-react"
+import { FilePenIcon, LoaderCircleIcon, PencilIcon, PlusIcon, TrashIcon, UploadCloud, UploadCloudIcon, XIcon } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import pdfToText from "react-pdftotext";
 import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
 
   const { resumes, currentResume } = useSelector((state: RootState) => state.resume);
+  const loading = useSelector((state: RootState) => state.ai.loading);
   const dispatch = useDispatch<AppDispatch>();
 
   const [allResumes, setAllResumes] = useState<StoredResume[]>([]);
@@ -21,8 +23,6 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [editResumeId, setEditResumeId] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -62,6 +62,25 @@ const Dashboard = () => {
 
   const uploadResume = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!resumeFile) {
+      toast.error("No file selected");
+      return;
+
+    }
+
+    try {
+      const resumeText = await pdfToText(resumeFile);
+
+      const result = await dispatch(aiUploaResume({ resumeText, title })).unwrap();
+      setTitle("");
+      setResumeFile(null);
+      setShowUploadResume(false);
+      router.push(`/builder/${result.resumeId}`);
+
+    } catch (error: any) {
+      const errMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      toast.error(error?.response?.data?.message || errMessage);
+    }
   };
 
   const editTitle = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -282,9 +301,12 @@ const Dashboard = () => {
               />
             </div>
             <button
-              className='w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors'
+              className={`w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors
+                ${loading && "flex items-center justify-center gap-2"}`}
+              disabled={loading}
             >
-              Upload Resume
+              {loading && <LoaderCircleIcon className="animate-spin size-4 text-white" />} 
+              {loading ? "Uploading..." : "Upload Resume"}
             </button>
 
             <XIcon

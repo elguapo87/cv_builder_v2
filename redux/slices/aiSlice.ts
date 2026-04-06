@@ -55,7 +55,6 @@ export const uploadResume = createAsyncThunk("ai/uploadResume", async (
     }
 });
 
-
 const aiSlice = createSlice({
     name: "ai",
     initialState,
