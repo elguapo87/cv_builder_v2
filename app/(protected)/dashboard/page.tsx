@@ -93,12 +93,7 @@ const Dashboard = () => {
         return;
       }
 
-      const { _id, userId, updatedAt, ...rest } = selectedResume;
-
-      const updatedData = {
-        ...rest,
-        title
-      };
+      const updatedData = { ...selectedResume, title };
 
       await dispatch(updateResume({ resumeId: editResumeId, resumeData: updatedData })).unwrap();
       toast.success("Saved");

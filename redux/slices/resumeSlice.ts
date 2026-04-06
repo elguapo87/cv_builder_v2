@@ -1,6 +1,8 @@
 import api from "@/lib/axios";
+import { Education, Experience, PersonalInfo, Projects } from "@/types/resume";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { create } from "domain";
+
+
 import toast from "react-hot-toast";
 
 interface Resume {
@@ -53,11 +55,18 @@ interface ResumeState {
     error: string | null;
 }
 
-type ResumeUpdatePayload = Omit<
-    Resume,
-    "_id" | "userId" | "updatedAt"
-
->
+type ResumeUpdatePayload = Partial<{
+    personal_info: PersonalInfo;
+    professional_summary: string;
+    experience: Experience[];
+    projects: Projects[];
+    education: Education[];
+    skills: string[];
+    title: string;
+    template: string;
+    accent_color: string;
+    public: boolean;
+}>;
 
 const initialState: ResumeState = {
     resumes: [],
