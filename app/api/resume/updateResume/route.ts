@@ -40,10 +40,10 @@ export async function POST(req: NextRequest) {
 
         const parsedResumeData = JSON.parse(resumeData);
         if (imageUrl) {
-            parsedResumeData.personal_info.image;
+            parsedResumeData.personal_info.image = imageUrl;
         }
 
-        const resume = await resumeModel.findByIdAndUpdate(
+        const resume = await resumeModel.findOneAndUpdate(
             { _id: resumeId, userId },
             { $set: parsedResumeData },
             { new: true }

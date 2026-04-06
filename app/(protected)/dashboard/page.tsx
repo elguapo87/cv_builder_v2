@@ -1,18 +1,28 @@
 "use client"
 
 import { dummyResumeData } from "@/public/assets";
+import { addResume, fetchUserResumes, removeResume, updateResume } from "@/redux/slices/resumeSlice";
+import { AppDispatch, RootState } from "@/redux/store";
 import { StoredResume } from "@/types/resume";
 import { FilePenIcon, PencilIcon, PlusIcon, TrashIcon, UploadCloud, UploadCloudIcon, XIcon } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
+
+  const { resumes, currentResume } = useSelector((state: RootState) => state.resume);
+  const dispatch = useDispatch<AppDispatch>();
+
   const [allResumes, setAllResumes] = useState<StoredResume[]>([]);
   const [showCreateResume, setShowCreateResume] = useState(false);
   const [showUploadResume, setShowUploadResume] = useState(false);
   const [title, setTitle] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [editResumeId, setEditResumeId] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -25,7 +35,11 @@ const Dashboard = () => {
   ];
 
   const loadAllResumes = async () => {
-    setAllResumes(dummyResumeData);
+    try {
+      await dispatch(fetchUserResumes()).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -34,28 +48,61 @@ const Dashboard = () => {
 
   const createResume = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setShowCreateResume(false);
-    router.push("/builder/new");
+
+    try {
+      const result = await dispatch(addResume(title)).unwrap();
+      setShowCreateResume(false);
+
+      router.push(`/builder/${result.resume._id}`);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const uploadResume = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-
   };
 
   const editTitle = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEditResumeId("");
+
+    try {
+      const selectedResume = resumes.find((r) => r._id === editResumeId);
+      if (!selectedResume) {
+        toast.error("Resume not found");
+        return;
+      }
+
+      const { _id, userId, updatedAt, ...rest } = selectedResume;
+
+      const updatedData = {
+        ...rest,
+        title
+      };
+
+      await dispatch(updateResume({ resumeId: editResumeId, resumeData: updatedData })).unwrap();
+      toast.success("Saved");
+
+      loadAllResumes();
+      setEditResumeId("");
+      setTitle("");
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const deleteResume = async (resumeId: string) => {
     const confirmation = window.confirm("Are you sure you want to delete this resume?");
     if (!confirmation) return;
-    setAllResumes((prev) => prev.filter((r) => r._id !== resumeId))
-  }
 
-  console.log(showCreateResume);
-
+    try {
+      await dispatch(removeResume(resumeId)).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className='max-w-7xl mx-auto px-4 py-8 text-stone-100'>
@@ -103,7 +150,7 @@ const Dashboard = () => {
 
       {/* USER RESUMES */}
       <div className='grid grid-cols-2 sm:flex flex-wrap gap-4'>
-        {allResumes.map((resume, index) => {
+        {resumes.map((resume, index) => {
           const baseColor = colors[index % colors.length];
 
           return (
