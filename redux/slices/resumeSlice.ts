@@ -139,6 +139,17 @@ export const removeResume = createAsyncThunk("resume/deleteResume", async (resum
     }
 });
 
+export const getResumeById = createAsyncThunk("resume/getResumeById", async (resumeId: string, { rejectWithValue }) => {
+    try {
+        const { data } = await api.post("/resume/getResumeById", { resumeId });
+
+        return data.resume;
+
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Failed to get resume");
+    }
+});
+
 const resumeSlice = createSlice({
     name: "resume",
     initialState,
@@ -212,6 +223,19 @@ const resumeSlice = createSlice({
                 toast.success(action.payload.message);
             })
             .addCase(removeResume.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+                toast.error(action.payload as string);
+            })
+            .addCase(getResumeById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getResumeById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentResume = action.payload;
+            })
+            .addCase(getResumeById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
                 toast.error(action.payload as string);
