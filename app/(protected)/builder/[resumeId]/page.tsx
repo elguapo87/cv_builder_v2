@@ -10,14 +10,20 @@ import ResumePreview from "@/components/ResumePreview";
 import SkillsForm from "@/components/SkillsForm";
 import TemplateSelector from "@/components/TemplateSelector";
 import { dummyResumeData } from "@/public/assets";
+import { getResumeById, updateResume } from "@/redux/slices/resumeSlice";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Education, Experience, PersonalInfo, Projects, Skill, StoredResume } from "@/types/resume";
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, Download, EyeIcon, EyeOffIcon, FileText, FolderIcon, GraduationCap, Share2Icon, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams() as { resumeId: string };
+  const { currentResume, loading } = useSelector((state: RootState) => state.resume);
+  const dispatch = useDispatch<AppDispatch>();
 
   const emptyResume: StoredResume = {
     _id: "",
@@ -54,49 +60,64 @@ const ResumeBuilder = () => {
   useEffect(() => {
     if (!resumeId) return;
 
-    if (resumeId === "new") {
-      setResumeData(emptyResume);
-      return;
-    }
+    dispatch(getResumeById(resumeId));
+  }, [resumeId, dispatch]);
 
-    const resume = dummyResumeData.find((r) => r._id === resumeId);
-    if (!resume) return;
+  useEffect(() => {
+    if (!currentResume) return;
 
-    setResumeData(resume);
-    document.title = resume.title;
-  }, [resumeId]);
+    setResumeData(currentResume);
+
+    document.title = currentResume.title;
+
+  }, [currentResume]);
 
   const changeVisibility = () => {
+    if (!resumeData._id) return;
+
     setResumeData((prev) => ({
       ...prev,
-      public: !prev.public
+      public: !resumeData.public
     }));
+
+    const updatedData = { ...resumeData, public: !resumeData.public };
+
+    dispatch(updateResume({ resumeId: resumeData._id, resumeData: updatedData }));
   };
 
   const handleSave = async () => {
-    let newId = resumeData._id;
-
-    if (!newId) {
-      newId = crypto.randomUUID();
+    if (!resumeData._id) {
+      toast.error("Resume not initialized");
+      return;
     }
 
-    const updatedResume = {
-      ...resumeData,
-      _id: newId,
-      createdAt: resumeData.createdAt || new Date().toISOString(),
-      updatedAt: resumeData.updatedAt || new Date().toISOString()
-    };
+    try {
+      const payload = Object.fromEntries(Object.entries(resumeData).filter(([_id, value]) => value !== undefined));
 
-    setResumeData(updatedResume);
+      const result = await dispatch(updateResume({
+        resumeId: resumeData._id,
+        resumeData: payload,
+        removeBackground,
+        image:
+          resumeData.personal_info.image instanceof File
+            ? resumeData.personal_info.image
+            : undefined
+      })).unwrap();
 
-    // store locally
-    const stored = JSON.parse(localStorage.getItem("resumes") || "[]");
-    const filtered = stored.filter((r: StoredResume) => r._id !== newId);
+      setResumeData(prev => ({
+        ...prev,
+        ...result,
+        personal_info: {
+          ...prev.personal_info,
+          ...(result.personal_info ?? {})
+        }
+      }));
 
-    localStorage.setItem(
-      "resumes",
-      JSON.stringify([...filtered, updatedResume])
-    );
+      toast.success("Resume saved");
+
+    } catch (error) {
+      toast.error("Failed to save resume");
+    }
   };
 
   const handleShare = () => {
@@ -320,7 +341,7 @@ const ResumeBuilder = () => {
               </div>
             </div>
 
-            <ResumePreview 
+            <ResumePreview
               data={resumeData}
               template={resumeData.template}
               accentColor={resumeData.accent_color}
