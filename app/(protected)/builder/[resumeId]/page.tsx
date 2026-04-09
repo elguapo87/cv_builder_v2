@@ -294,10 +294,12 @@ const ResumeBuilder = () => {
 
               <button
                 onClick={handleSave}
-                className="bg-linear-to-r from-green-100 to-green-300 ring-green-400 text-green-700
-                    ring hover:ring-green-600 transition-all rounded-md px-6 py-2 mt-6 text-sm"
+                className={`bg-linear-to-r from-green-100 to-green-300 ring-green-400 text-green-700
+                    ring hover:ring-green-600 transition-all rounded-md px-6 py-2 mt-6 text-sm 
+                    ${loading && "cursor-not-allowed"}`}
+                disabled={loading}
               >
-                Save Changes
+               {loading ? "Saving" : "Save Changes"}
               </button>
             </div>
           </div>

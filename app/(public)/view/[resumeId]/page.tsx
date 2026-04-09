@@ -2,22 +2,43 @@
 
 import Loader from "@/components/Loader";
 import ResumePreview from "@/components/ResumePreview";
-import { UseResume } from "@/hooks/useResume"
+import { getResumeById } from "@/redux/slices/resumeSlice";
+import { AppDispatch, RootState } from "@/redux/store";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const View = () => {
     const { resumeId } = useParams() as { resumeId: string };
 
-    const { resume, loading } = UseResume(resumeId);
+    const currentResume = useSelector((state: RootState) => state.resume.currentResume);
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
 
-    if (loading) {
-        return <Loader />
-    }
+    useEffect(() => {
+        const fetchResume = async () => {
+            try {
+                setLoading(true);
+                await dispatch(getResumeById(resumeId)).unwrap();
 
-    if (!resume) {
+            } catch (error) {
+                const errMessage = error instanceof Error ? error.message : "An unknown error occurred";
+                console.error(errMessage);
+
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchResume();
+    }, [resumeId, dispatch]);
+
+    if (loading) return <Loader />;
+
+    if (!currentResume) {
         return (
             <div className="flex flex-col items-center justify-center h-screen">
                 <p className="text-center text-6xl text-slate-200 font-medium">
@@ -34,16 +55,26 @@ const View = () => {
                 </Link>
             </div>
         );
-
     }
 
     return (
         <div className="min-h-screen bg-black/98">
-            <div className="max-w-3xl mx-auto py-10">
+            <div className="max-w-3xl mx-auto py-10 max-sm:px-2">
+
+                <Link
+                    href="/"
+                    className="flex items-center gap-0.75 mb-2 border border-stone-100 w-fit py-0.5 px-1 rounded-md
+                      text-stone-100 hover:bg-stone-100 hover:text-gray-800 transition-all duration-200"
+                >
+                    <ArrowLeftIcon className="size-4.5" />
+                    <p className="text-sm">Go back</p>
+                </Link>
+
+
                 <ResumePreview
-                    data={resume}
-                    template={resume.template}
-                    accentColor={resume.accent_color}
+                    data={currentResume}
+                    template={currentResume.template}
+                    accentColor={currentResume.accent_color}
                     classes="py-4 bg-white"
                 />
             </div>

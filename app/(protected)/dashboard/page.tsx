@@ -65,7 +65,6 @@ const Dashboard = () => {
     if (!resumeFile) {
       toast.error("No file selected");
       return;
-
     }
 
     try {

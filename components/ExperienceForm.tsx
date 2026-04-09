@@ -1,5 +1,10 @@
+import { enhanceJobDescription } from "@/redux/slices/aiSlice";
+import { AppDispatch } from "@/redux/store";
 import { Experience } from "@/types/resume";
-import { Briefcase, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Briefcase, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 type BuilderProps = {
     expData: Experience[];
@@ -7,6 +12,10 @@ type BuilderProps = {
 };
 
 const ExperienceForm = ({ expData, onChange }: BuilderProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [generatingIndex, setGeneratingIndex] = useState(-1);
+
     const addExperience = () => {
         const newExperience = {
             position: "",
@@ -30,6 +39,25 @@ const ExperienceForm = ({ expData, onChange }: BuilderProps) => {
         const updated = [...expData];
         updated[index] = { ...updated[index], [field]: value };
         onChange(updated);
+    };
+
+    const generateDesciption = async (index: number) => {
+        setGeneratingIndex(index);
+        const experience = expData[index];
+
+        const prompt = `enhance this job description ${experience.description}
+            for the position of ${experience.position} at ${experience.company}`;
+            
+        try {
+            const result = await dispatch(enhanceJobDescription(prompt)).unwrap();
+            updateExperience(index, "description", result);
+
+        } catch (error) {
+            const errMessage = error instanceof Error ? error.message : "An unknown error occurred";
+            toast.error(errMessage || "Failed to enhance");
+        } finally {
+            setGeneratingIndex(-1);
+        }
     };
 
     return (
@@ -120,12 +148,19 @@ const ExperienceForm = ({ expData, onChange }: BuilderProps) => {
                                 <div className="flex items-center justify-between">
                                     <label className="text-sm font-medium text-gray-700">Job Description</label>
                                     <button
+                                        onClick={() => generateDesciption(index)}
                                         className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100
                                             text-purple-700 rounded hover:bg-purple-200 transition-colors
                                             disabled:opacity-50"
+                                        disabled={generatingIndex === index || !exp.position || !exp.company}
                                     >
-                                        <Sparkles className="w-3 h-3" />
+                                        {generatingIndex === index ? (                                             
+                                            <Loader2 className="size-3 animate-spin" />
+                                        ) : (
+                                            <Sparkles className="w-3 h-3" />
+                                        )}
                                         Enhance with AI
+
                                     </button>
                                 </div>
                                 <textarea

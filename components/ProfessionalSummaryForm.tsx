@@ -1,4 +1,9 @@
-import { Sparkles } from "lucide-react";
+import { enhanceProfessionalSummary } from "@/redux/slices/aiSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { StoredResume } from "@/types/resume";
+import { Loader2, Sparkles } from "lucide-react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 type BuilderProps = {
     data: string;
@@ -6,8 +11,23 @@ type BuilderProps = {
 };
 
 const ProfessionalSummaryForm = ({ data, onChange }: BuilderProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const loading = useSelector((state: RootState) => state.ai.loading);
 
-    console.log(data);
+    const generateSummary = async () => {
+        try {
+            const prompt = `enhance my professional summary "${data}"`;
+            if (!prompt) return;
+
+            const result = await dispatch(enhanceProfessionalSummary(prompt)).unwrap();
+
+            onChange(result);
+
+        } catch (error) {
+            const errMessage = error instanceof Error ? error.message : "An unknown error occurred";
+            toast.error(errMessage || "Failed to enhance");
+        }
+    };
 
     return (
         <div className="space-y-4">
@@ -18,11 +38,17 @@ const ProfessionalSummaryForm = ({ data, onChange }: BuilderProps) => {
                 </div>
 
                 <button
+                    onClick={generateSummary}
                     className="flex items-center gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700 roudned
                         rounded hover:bg-purple-200 transition-colors disabled:opacity-50"
+                    disabled={loading}
                 >
-                    <Sparkles className="size-4" />
-                    AI Enhance
+                    {loading ? (
+                        <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                        <Sparkles className="size-4" />
+                    )}
+                    {loading ? "Enhancing..." : "AI Enhance"}
                 </button>
             </div>
 
