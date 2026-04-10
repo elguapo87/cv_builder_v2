@@ -1,6 +1,6 @@
 import { ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
+import { useEffect, useState } from "react";
 
 interface MinimalImageTemplateProps {
     data: ResumeData;
@@ -17,35 +17,43 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
         });
     };
 
-    let imageSrc: string | StaticImageData | undefined;
-
     const image = data.personal_info?.image;
 
-    if (typeof image === "string") {
-        imageSrc = image;
-    } else if (image instanceof File) {
-        imageSrc = URL.createObjectURL(image);
-    } else if (image) {
-        imageSrc = image; // StaticImageData
-    }
+    const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        if (!image) {
+            setImageSrc(undefined);
+            return;
+        }
+
+        if (typeof image === "string") {
+            setImageSrc(`${image}?t=${Date.now()}`); // cache bust
+            return;
+        }
+
+        if (image instanceof File) {
+            const url = URL.createObjectURL(image);
+            setImageSrc(url);
+
+            return () => URL.revokeObjectURL(url); // cleanup
+        }
+    }, [image]);
 
     return (
-        <div className="max-w-5xl mx-auto bg-white text-zinc-800">
+        <div className="w-[794px] max-w-5xl mx-auto bg-white text-zinc-800">
             <div className="grid grid-cols-3">
 
                 <div className="col-span-1  py-10">
                     {/* Image */}
                     {imageSrc && (
-                        <div className="mb-6">
-                            <Image
-                                src={imageSrc}
-                                alt="Profile"
-                                width={128}
-                                height={128}
-                                className="w-32 h-32 object-cover rounded-full mx-auto"
-                                style={{ background: accentColor + '70' }}
-                            />
-                        </div>
+                        <img
+                            key={imageSrc} // force refresh
+                            src={imageSrc}
+                            alt="Profile"
+                            className="w-32 h-32 object-cover rounded-full mx-auto"
+                            style={{ background: accentColor + '70' }}
+                        />
                     )}
                 </div>
 

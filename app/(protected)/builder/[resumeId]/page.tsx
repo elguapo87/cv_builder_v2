@@ -9,14 +9,15 @@ import ProjectForm from "@/components/ProjectForm";
 import ResumePreview from "@/components/ResumePreview";
 import SkillsForm from "@/components/SkillsForm";
 import TemplateSelector from "@/components/TemplateSelector";
-import { dummyResumeData } from "@/public/assets";
 import { getResumeById, updateResume } from "@/redux/slices/resumeSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Education, Experience, PersonalInfo, Projects, Skill, StoredResume } from "@/types/resume";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, Download, EyeIcon, EyeOffIcon, FileText, FolderIcon, GraduationCap, Share2Icon, Sparkles, User } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -56,6 +57,8 @@ const ResumeBuilder = () => {
   ];
 
   const activeSection = sections[activeSectionIndex];
+
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!resumeId) return;
@@ -136,8 +139,38 @@ const ResumeBuilder = () => {
     }
   };
 
-  const downloadResume = () => {
-    window.print();
+  
+  const downloadResume = async () => {
+    if (!printRef.current) return;
+
+    try {
+      // 🧠 wait for DOM update
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const dataUrl = await toPng(printRef.current, {
+        cacheBust: true,
+        pixelRatio: 2
+      });
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: "a4"
+      });
+
+      const imgProps = pdf.getImageProperties(dataUrl);
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+      pdf.save(`${resumeData.title || "resume"}.pdf`);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate PDF");
+    }
   };
 
   return (
@@ -299,7 +332,7 @@ const ResumeBuilder = () => {
                     ${loading && "cursor-not-allowed"}`}
                 disabled={loading}
               >
-               {loading ? "Saving" : "Save Changes"}
+                {loading ? "Saving" : "Save Changes"}
               </button>
             </div>
           </div>
@@ -347,6 +380,17 @@ const ResumeBuilder = () => {
               data={resumeData}
               template={resumeData.template}
               accentColor={resumeData.accent_color}
+            />
+          </div>
+        </div>
+
+        <div className="fixed -left-2499.75 top-0">
+          <div ref={printRef}>
+            <ResumePreview
+              data={resumeData}
+              template={resumeData.template}
+              accentColor={resumeData.accent_color}
+              classes="bg-white shadow-none border-none"
             />
           </div>
         </div>

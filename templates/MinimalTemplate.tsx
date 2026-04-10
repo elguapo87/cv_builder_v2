@@ -16,7 +16,7 @@ const MinimalTemplate = ({ data, accentColor }: MinimalTemplateProps) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light">
+        <div className="w-[794px] max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light">
             {/* Header */}
             <header className="mb-10">
                 <h1 className="text-4xl font-thin mb-4 tracking-wide">
