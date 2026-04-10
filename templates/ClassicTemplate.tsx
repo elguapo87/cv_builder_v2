@@ -9,8 +9,12 @@ interface ClassicTemplateProps {
 const ClassicTemplate = ({ data, accentColor }: ClassicTemplateProps) => {
     const formatDate = (dateStr?: string): string => {
         if (!dateStr) return "";
-        const [year, month] = dateStr.split("-");
-        return new Date(Number(year), Number(month) - 1).toLocaleDateString("en-US", {
+
+        const date = new Date(dateStr);
+
+        if (isNaN(date.getTime())) return "";
+
+        return date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short"
         });

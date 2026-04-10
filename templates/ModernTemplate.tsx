@@ -1,7 +1,7 @@
 import { ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Globe, Link } from "lucide-react";
 
-interface  ModernTemplateProps {
+interface ModernTemplateProps {
 	data: ResumeData;
 	accentColor: string;
 }
@@ -9,8 +9,12 @@ interface  ModernTemplateProps {
 const ModernTemplate = ({ data, accentColor }: ModernTemplateProps) => {
 	const formatDate = (dateStr?: string): string => {
 		if (!dateStr) return "";
-		const [year, month] = dateStr.split("-");
-		return new Date(Number(year), Number(month) - 1).toLocaleDateString("en-US", {
+
+		const date = new Date(dateStr);
+
+		if (isNaN(date.getTime())) return "";
+
+		return date.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "short"
 		});
@@ -109,7 +113,7 @@ const ModernTemplate = ({ data, accentColor }: ModernTemplateProps) => {
 
 						<div className="space-y-6">
 							{data.projects.map((p, index) => (
-								<div key={index} className="relative pl-6 border-l border-gray-200" style={{borderLeftColor: accentColor}}>
+								<div key={index} className="relative pl-6 border-l border-gray-200" style={{ borderLeftColor: accentColor }}>
 
 
 									<div className="flex justify-between items-start">
