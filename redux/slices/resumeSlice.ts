@@ -41,6 +41,7 @@ interface Resume {
         institution: string;
         degree: string;
         field: string;
+        start_date: string;
         graduation_date: string;
         gpa: string;
     }[];

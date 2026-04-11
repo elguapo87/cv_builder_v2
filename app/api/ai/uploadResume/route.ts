@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
                             institution: { type: String },
                             degree: { type: String },
                             field: { type: String },
+                            start_date: { type: String },
                             graduation_date: { type: String },
                             gpa: { type: String }
                         }

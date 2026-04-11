@@ -31,6 +31,7 @@ export interface Education {
     field?: string;
     institution: string;
     gpa?: string;
+    start_date?: string;
     graduation_date?: string;
 };
 

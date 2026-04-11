@@ -113,9 +113,15 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                                     <div key={index}>
                                         <p className="font-semibold uppercase">{edu.degree}</p>
                                         <p className="text-zinc-600">{edu.institution}</p>
-                                        <p className="text-xs text-zinc-500">
-                                            {formatDate(edu.graduation_date)}
-                                        </p>
+                                        <div className="flex items-center gap-1">
+                                            <p className="text-xs text-zinc-500">
+                                                {formatDate(edu.start_date)}
+                                            </p>
+                                            <span className="text-xs text-zinc-500">-</span>
+                                            <p className="text-xs text-zinc-500">
+                                                {formatDate(edu.graduation_date)}
+                                            </p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

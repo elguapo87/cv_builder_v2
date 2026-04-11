@@ -112,9 +112,15 @@ const MinimalTemplate = ({ data, accentColor }: MinimalTemplateProps) => {
                                     <p className="text-gray-600">{edu.institution}</p>
                                     {edu.gpa && <p className="text-sm text-gray-500">GPA: {edu.gpa}</p>}
                                 </div>
-                                <span className="text-sm text-gray-500">
-                                    {formatDate(edu.graduation_date)}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-500">
+                                        {formatDate(edu.start_date)}
+                                    </span>
+                                    <span className="text-sm text-gray-500">-</span>
+                                    <span className="text-sm text-gray-500">
+                                        {formatDate(edu.graduation_date)}
+                                    </span>
+                                </div>
                             </div>
                         ))}
                     </div>
