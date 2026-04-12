@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = "force-dynamic";
+
 import GuestGuard from "@/components/GuestGuard";
 import api from "@/lib/axios";
 import { loginUser, registerUser } from "@/redux/slices/authSlice";
