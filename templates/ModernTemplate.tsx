@@ -21,7 +21,7 @@ const ModernTemplate = ({ data, accentColor }: ModernTemplateProps) => {
 	};
 
 	return (
-		<div className="w-[794px] max-w-4xl mx-auto bg-white text-gray-800">
+		<div className="md:w-198.5 max-w-4xl mx-auto bg-white text-gray-800">
 			{/* Header */}
 			<header className="p-8 text-white" style={{ backgroundColor: accentColor }}>
 				<h1 className="text-4xl font-light mb-3">
@@ -89,8 +89,13 @@ const ModernTemplate = ({ data, accentColor }: ModernTemplateProps) => {
 											<h3 className="text-xl font-medium text-gray-900">{exp.position}</h3>
 											<p className="font-medium" style={{ color: accentColor }}>{exp.company}</p>
 										</div>
-										<div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded">
-											{formatDate(exp.start_date)} - {exp.is_current ? "Present" : formatDate(exp.end_date)}
+										<div
+											className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded
+												flex items-center gap-0.5 md:gap-2"
+										>
+											<span>{formatDate(exp.start_date)}</span>
+											{"-"}
+											<span>{exp.is_current ? "Present" : formatDate(exp.end_date)}</span>
 										</div>
 									</div>
 									{exp.description && (
@@ -148,7 +153,7 @@ const ModernTemplate = ({ data, accentColor }: ModernTemplateProps) => {
 										</h3>
 										<p style={{ color: accentColor }}>{edu.institution}</p>
 										<div className="flex justify-between items-center text-sm text-gray-600">
-											<div className="flex items-center gap-2">
+											<div className="flex items-center gap-0.5 md:gap-2">
 												<span>{formatDate(edu.start_date)}</span>
 												{"-"}
 												<span>{formatDate(edu.graduation_date)}</span>

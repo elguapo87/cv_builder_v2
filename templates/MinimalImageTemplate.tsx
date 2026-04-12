@@ -45,25 +45,25 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
     }, [image]);
 
     return (
-        <div className="w-[794px] max-w-5xl mx-auto bg-white text-zinc-800">
+        <div className="md:w-198.5 max-w-5xl mx-auto bg-white text-zinc-800">
             <div className="grid grid-cols-3">
 
-                <div className="col-span-1  py-10">
+                <div className="col-span-1 py-10 max-md:ml-2">
                     {/* Image */}
                     {imageSrc && (
                         <img
                             key={imageSrc} // force refresh
                             src={imageSrc}
                             alt="Profile"
-                            className="w-32 h-32 object-cover rounded-full mx-auto"
+                            className="w-28 h-28 md:w-32 md:h-32 object-cover rounded-full aspect-square mx-auto"
                             style={{ background: accentColor + '70' }}
                         />
                     )}
                 </div>
 
                 {/* Name + Title */}
-                <div className="col-span-2 flex flex-col justify-center py-10 px-8">
-                    <h1 className="text-4xl font-bold text-zinc-700 tracking-widest">
+                <div className="col-span-2 flex flex-col justify-center py-10 px-8 max-md:ml-2">
+                    <h1 className="text-3xl md:text-4xl font-bold text-zinc-700 tracking-widest">
                         {data.personal_info?.full_name || "Your Name"}
                     </h1>
                     <p className="uppercase text-zinc-600 font-medium text-sm tracking-widest">
@@ -72,7 +72,7 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                 </div>
 
                 {/* Left Sidebar */}
-                <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0">
+                <aside className="col-span-1 border-r max-md:-mr-10 border-zinc-400 p-2 md:p-6 pt-0">
 
 
                     {/* Contact */}
@@ -80,7 +80,7 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                         <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
                             CONTACT
                         </h2>
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-2 text-sm break-all">
                             {data.personal_info?.phone && (
                                 <div className="flex items-center gap-2">
                                     <Phone size={14} style={{ color: accentColor }} />
@@ -104,7 +104,7 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
 
                     {/* Education */}
                     {data.education && data.education.length > 0 && (
-                        <section className="mb-8">
+                        <section className="mb-8 break-all">
                             <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
                                 EDUCATION
                             </h2>
@@ -113,12 +113,12 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                                     <div key={index}>
                                         <p className="font-semibold uppercase">{edu.degree}</p>
                                         <p className="text-zinc-600">{edu.institution}</p>
-                                        <div className="flex items-center gap-1">
-                                            <p className="text-xs text-zinc-500">
+                                        <div className="flex items-center gap-1 text-xs text-zinc-500">
+                                            <p>
                                                 {formatDate(edu.start_date)}
                                             </p>
-                                            <span className="text-xs text-zinc-500">-</span>
-                                            <p className="text-xs text-zinc-500">
+                                            {"-"}
+                                            <p>
                                                 {formatDate(edu.graduation_date)}
                                             </p>
                                         </div>
@@ -144,7 +144,7 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                 </aside>
 
                 {/* Right Content */}
-                <main className="col-span-2 p-8 pt-0">
+                <main className="col-span-2 p-10 md:p-8 pt-0 max-md:ml-5">
 
                     {/* Summary */}
                     {data.professional_summary && (
@@ -167,13 +167,14 @@ const MinimalImageTemplate = ({ data, accentColor }: MinimalImageTemplateProps) 
                             <div className="space-y-6 mb-8">
                                 {data.experience.map((exp, index) => (
                                     <div key={index}>
-                                        <div className="flex justify-between items-center">
+                                        <div className="flex justify-between items-center max-md:gap-8">
                                             <h3 className="font-semibold text-zinc-900">
                                                 {exp.position}
                                             </h3>
-                                            <span className="text-xs text-zinc-500">
-                                                {formatDate(exp.start_date)} -{" "}
-                                                {exp.is_current ? "Present" : formatDate(exp.end_date)}
+                                            <span className="text-xs max-md:text-[10px] text-zinc-500 flex items-center gap-1">
+                                                <span>{formatDate(exp.start_date)}</span>
+                                                {"-"}
+                                                <span>{exp.is_current ? "Present" : formatDate(exp.end_date)}</span>
                                             </span>
                                         </div>
                                         <p className="text-sm mb-2" style={{ color: accentColor }} >

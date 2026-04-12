@@ -68,45 +68,40 @@ const EducationForm = ({ data, onChange }: ResumeProps) => {
                                 </button>
                             </div>
                             {/* grid md:grid-cols-2 gap-3 */}
-                            <div className="grid md:flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-3">
                                 <input
                                     onChange={(e) => updateEducation(index, "institution", e.target.value)}
                                     value={edu.institution || ""}
                                     type="text"
                                     placeholder="Institution Name"
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                        md:w-full"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                                 />
                                 <input
                                     onChange={(e) => updateEducation(index, "degree", e.target.value)}
                                     value={edu.degree || ""}
                                     type="text"
                                     placeholder="Degree (e.g., Bachelor's, Master's)"
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                        md:w-full"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                                 />
                                 <input
                                     onChange={(e) => updateEducation(index, "field", e.target.value)}
                                     value={edu.field || ""}
                                     type="text"
                                     placeholder="Field of Study"
-                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                        md:w-full"
+                                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                                 />
-                                <div className="flex items-center w-full gap-3">
+                                <div className="flex flex-col md:flex-row items-center w-full gap-3">
                                     <input
                                         onChange={(e) => updateEducation(index, "start_date", e.target.value)}
                                         value={edu.start_date || ""}
                                         type="month"
-                                        className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                        md:w-full"
+                                        className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                                     />
                                     <input
                                         onChange={(e) => updateEducation(index, "graduation_date", e.target.value)}
                                         value={edu.graduation_date || ""}
                                         type="month"
-                                        className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                        md:w-full"
+                                        className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                                     />
                                 </div>
                             </div>
@@ -116,8 +111,7 @@ const EducationForm = ({ data, onChange }: ResumeProps) => {
                                 value={edu.gpa || ""}
                                 type="text"
                                 placeholder="Gpa (optional)"
-                                className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500
-                                    md:w-full"
+                                className="px-3 py-2 text-sm rounded-lg border border-gray-300 outline-blue-500 w-full"
                             />
                         </div>
                     ))}

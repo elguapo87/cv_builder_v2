@@ -21,7 +21,7 @@ const ClassicTemplate = ({ data, accentColor }: ClassicTemplateProps) => {
     };
 
     return (
-        <div className="w-[794px] max-w-4xl mx-auto p-8 bg-white text-gray-800 leading-relaxed">
+        <div className="md:w-198.5 max-w-4xl mx-auto p-8 bg-white text-gray-800 leading-relaxed">
             {/* Header */}
             <header className="text-center mb-8 pb-6 border-b-2" style={{ borderColor: accentColor }}>
                 <h1 className="text-3xl font-bold mb-2" style={{ color: accentColor }}>
@@ -87,8 +87,13 @@ const ClassicTemplate = ({ data, accentColor }: ClassicTemplateProps) => {
                                         <h3 className="font-semibold text-gray-900">{exp.position}</h3>
                                         <p className="text-gray-700 font-medium">{exp.company}</p>
                                     </div>
-                                    <div className="text-right text-sm text-gray-600">
-                                        <p>{formatDate(exp.start_date)} - {exp.is_current ? "Present" : formatDate(exp.end_date)}</p>
+                                    <div
+                                        className="text-right text-sm text-gray-600 flex items-center
+                                            gap-0.5 md:gap-2"
+                                    >
+                                        <span>{formatDate(exp.start_date)}</span>
+                                        {"-"}
+                                        <span>{exp.is_current ? "Present" : formatDate(exp.end_date)}</span>
                                     </div>
                                 </div>
                                 {exp.description && (
@@ -139,7 +144,7 @@ const ClassicTemplate = ({ data, accentColor }: ClassicTemplateProps) => {
                                     <p className="text-gray-700">{edu.institution}</p>
                                     {edu.gpa && <p className="text-sm text-gray-600">GPA: {edu.gpa}</p>}
                                 </div>
-                                <div className="text-sm text-gray-600 flex items-center gap-2">
+                                <div className="text-sm text-gray-600 flex items-center gap-0.5 md:gap-2">
                                     <p>{formatDate(edu.start_date)}</p>
                                     {"-"}
                                     <p>{formatDate(edu.graduation_date)}</p>

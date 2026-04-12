@@ -20,7 +20,7 @@ const MinimalTemplate = ({ data, accentColor }: MinimalTemplateProps) => {
     };
 
     return (
-        <div className="w-[794px] max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light">
+        <div className="md:w-198.5 max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light">
             {/* Header */}
             <header className="mb-10">
                 <h1 className="text-4xl font-thin mb-4 tracking-wide">
@@ -61,9 +61,13 @@ const MinimalTemplate = ({ data, accentColor }: MinimalTemplateProps) => {
                             <div key={index}>
                                 <div className="flex justify-between items-baseline mb-1">
                                     <h3 className="text-lg font-medium">{exp.position}</h3>
-                                    <span className="text-sm text-gray-500">
-                                        {formatDate(exp.start_date)} - {exp.is_current ? "Present" : formatDate(exp.end_date)}
-                                    </span>
+                                    <div className="flex items-center gap-0.5 md:gap-2 text-sm text-gray-500">
+                                        <span>{formatDate(exp.start_date)}</span>
+                                        {"-"}
+                                        <span>
+                                            {exp.is_current ? "Present" : formatDate(exp.end_date)}
+                                        </span>
+                                    </div>
                                 </div>
                                 <p className="text-gray-600 mb-2">{exp.company}</p>
                                 {exp.description && (
@@ -112,7 +116,7 @@ const MinimalTemplate = ({ data, accentColor }: MinimalTemplateProps) => {
                                     <p className="text-gray-600">{edu.institution}</p>
                                     {edu.gpa && <p className="text-sm text-gray-500">GPA: {edu.gpa}</p>}
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-0.5 md:gap-2">
                                     <span className="text-sm text-gray-500">
                                         {formatDate(edu.start_date)}
                                     </span>
