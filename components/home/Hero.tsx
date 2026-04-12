@@ -3,14 +3,12 @@
 import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Hero = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const router = useRouter();
-
+   
     const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
@@ -41,13 +39,13 @@ const Hero = () => {
                     <div
                         id="menu"
                         className={`
-                                ${mobileOpen ? 'max-md:w-full' : 'max-md:w-0'}
+                                ${mobileOpen ? 'max-md:w-full relative' : 'max-md:w-0'}
                                 max-md:fixed max-md:top-0 max-md:left-0 max-md:h-screen
                                 max-md:bg-black/50 max-md:backdrop-blur
                                 max-md:transition-all max-md:duration-300
                                 max-md:overflow-hidden
                                 max-md:flex max-md:items-center max-md:justify-center
-                                flex items-center gap-8 text-sm z-50
+                                flex items-center gap-8 text-sm z-50 
                             `}
                     >
                         {/* Close button - absolute */}
@@ -74,6 +72,26 @@ const Hero = () => {
 
                         {/* Links container */}
                         <div className="flex flex-col items-center gap-16 md:flex-row">
+                            {(mobileOpen && user) ? (
+                                <Link
+                                    href="/dashboard" 
+                                    className="bg-transparent border border-[#A6FF5D] text-[#A6FF5D]
+                                        font-medium px-2 py-1.5 rounded-full text-xs cursor-pointer
+                                        hover:bg-[#84f12a] hover:text-gray-700 transition-all duration-200"
+                                >
+                                    Go to Dashboard
+                                </Link>
+                            ) : (
+                                <Link 
+                                    href="/login"
+                                    className="bg-transparent border border-stone-100 text-stone-50
+                                        px-3 py-1.5 rounded-2xl text-sm cursor-pointer
+                                        hover:bg-stone-100 hover:text-gray-700 transition-all duration-200"    
+                                >
+                                    
+                                    Login
+                                </Link>
+                            )}
                             <a href="#" onClick={() => setMobileOpen(false)} className="text-stone-50 hover:text-[#a5fe64]">
                                 Home
                             </a>
