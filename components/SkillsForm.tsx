@@ -35,21 +35,21 @@ const SkillsForm = ({ data, onChange }: BuilderProps) => {
                 <p className='text-sm text-gray-500'>Add your technical and soft skills</p>
             </div>
 
-            <div className='flex gap-2'>
+            <div className='flex gap-2 max-md:justify-center'>
                 <input
                     onChange={(e) => setNewSkill(e.target.value)}
                     value={newSkill}
                     placeholder='Enter a skill (e.g., Javascript, Project Managenemt)'
                     type="text"
                     className='flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300
-                        outline-blue-500 placeholder:text-xs'
+                        outline-blue-500 placeholder:text-xs max-md:w-1/2'
                     onKeyDown={handleKeyPress}
                 />
 
                 <button
                     onClick={addSkill}
                     className='flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg
-                        hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                        hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed max-md:w-1/3 '
                     disabled={!newSkill.trim()}
                 >
                     <Plus className='size-4' />
