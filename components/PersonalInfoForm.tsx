@@ -79,7 +79,7 @@ const PersonalInfoForm = ({ personalData, onChange, removeBackground, setRemoveB
                     />
                 </label>
 
-                {personalData.image instanceof File && (
+                {/* {personalData.image instanceof File && (
                     <div className='flex flex-col gap-1 pl-4 text-sm'>
                         <p>Remove Background</p>
                         <label className='relative inline-flex items-center cursor-pointer text-stone-100 gap-3'>
@@ -99,7 +99,7 @@ const PersonalInfoForm = ({ personalData, onChange, removeBackground, setRemoveB
                             />
                         </label>
                     </div>
-                )}
+                )} */}
             </div>
 
             {fields.map((field) => {
