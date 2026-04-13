@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams() as { resumeId: string };
-  const { currentResume, loading } = useSelector((state: RootState) => state.resume);
+  const { currentResume } = useSelector((state: RootState) => state.resume);
   const dispatch = useDispatch<AppDispatch>();
 
   const emptyResume: StoredResume = {
@@ -60,6 +60,8 @@ const ResumeBuilder = () => {
 
   const printRef = useRef<HTMLDivElement>(null);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!resumeId) return;
 
@@ -94,6 +96,8 @@ const ResumeBuilder = () => {
       return;
     }
 
+    setLoading(true)
+
     try {
       const payload = Object.fromEntries(Object.entries(resumeData).filter(([_id, value]) => value !== undefined));
 
@@ -120,6 +124,9 @@ const ResumeBuilder = () => {
 
     } catch (error) {
       toast.error("Failed to save resume");
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -332,7 +339,7 @@ const ResumeBuilder = () => {
                     ${loading && "cursor-not-allowed"}`}
                 disabled={loading}
               >
-                {loading ? "Saving" : "Save Changes"}
+                {loading ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>

@@ -14,9 +14,6 @@ const Navbar = () => {
         dispatch(logout());
     };
 
-    console.log(user);
-    
-
     return (
         <div className='shadow md:shadow-md shadow-[#A6FF5D] bg-black/97'>
             <nav className='flex items-center justify-between max-w-7xl mx-auto px-4
