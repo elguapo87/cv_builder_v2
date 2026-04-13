@@ -13,7 +13,19 @@ export async function POST(req: NextRequest) {
             messages: [
                 {
                     role: "system",
-                    content: "You are an exprert in resume writing. Your tasks is to enhance the professional summary of a resume. The summary should be 1-2 sentences also highlighting key skills, experience, and career objectives. Make it compelling and ATS-friendly, and only return text no options or anything else."
+                    content: `
+                        You are an expert in resume writing.
+
+                        Enhance a job experience description.
+
+                        Rules:
+                        - 3–6 bullet points
+                        - Start each with action verbs
+                        - Focus on impact and achievements
+                        - ATS-friendly language
+                        - Same language as input (no translation)
+                        - Output only bull
+                    `
                 },
                 {
                     role: "user",
@@ -22,7 +34,7 @@ export async function POST(req: NextRequest) {
             ]
         });
 
-        const enhancedContent = response.choices[0].message.content;
+        const enhancedContent = response.choices?.[0]?.message?.content?.trim() || "";
 
         return NextResponse.json({ success: true, enhancedContent });
 
