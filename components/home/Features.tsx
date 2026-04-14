@@ -17,8 +17,7 @@ const Features = () => {
 
             <Title
                 title="Build your resume"
-                description="Our streamlined process helps to create a professional resume in minutes with
-                    intelligent AI-powered tools and features"
+                description="An effortless process for creating professional resumes in minutes, powered by intelligent AI tools."
             />
 
             <div className="flex flex-col md:flex-row items-center justify-center xl:-mt-10">
