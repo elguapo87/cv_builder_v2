@@ -21,7 +21,16 @@ const Footer = () => {
 
                 <hr className="w-full text-stone-50" />
 
-                <p className="text-xs md:text-sm mt-1">All rights reserved | Built with ❤️ by P.G. 2026.</p>
+                <p className="text-xs md:text-sm mt-1 text-center max-md:flex flex-col gap-1.5">
+                   © 2026 All rights reserved | Built with ❤️ by P.G.
+                   {" "}
+                   <span className="max-md:hidden">|</span>
+                   {/* <span>pglogovac@gmail.com</span> */}
+                   {" "}
+                   <a href="mailto:tvoj.email@gmail.com" className="hover:underline">
+                        pglogovac@gmail.com
+                   </a>
+                </p>
             </div>
         </footer>
     )
