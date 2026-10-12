@@ -146,41 +146,6 @@ const ResumeBuilder = () => {
     }
   };
 
-
-  // const downloadResume = async () => {
-  //   if (!printRef.current) return;
-
-  //   try {
-  //     // 🧠 wait for DOM update
-  //     await new Promise((resolve) => setTimeout(resolve, 100));
-
-  //     const dataUrl = await toPng(printRef.current, {
-  //       cacheBust: true,
-  //       pixelRatio: 2
-  //     });
-
-  //     const pdf = new jsPDF({
-  //       orientation: "portrait",
-  //       unit: "px",
-  //       format: "a4"
-  //     });
-
-  //     const imgProps = pdf.getImageProperties(dataUrl);
-
-  //     const pdfWidth = pdf.internal.pageSize.getWidth();
-  //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  //     pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-  //     pdf.save(`${resumeData.title || "resume"}.pdf`);
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Failed to generate PDF");
-  //   }
-  // };
-
-
   const downloadResume = async () => {
     if (!printRef.current) return;
 
@@ -230,7 +195,6 @@ const ResumeBuilder = () => {
       toast.error("Failed to generate PDF");
     }
   };
-
 
   return (
     <>
